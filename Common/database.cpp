@@ -1,0 +1,94 @@
+#include "database.h"
+
+
+Database* Database::instance = nullptr;
+
+Database::Database(){
+    //open connection
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+
+    db.setDatabaseName(Globals::dbName);
+    db.setUserName(Globals::user);
+    db.setPassword(Globals::passwd);
+
+    if(!db.open()){
+        qDebug() << "Error in DB open";
+        exit(1);
+    }
+
+    //create tables
+    query = QSqlQuery();
+    createTables();
+}
+
+Database* Database::getInstance(){
+    //get singleton
+    if(instance == nullptr)
+        instance = new Database();
+
+    return instance;
+}
+
+Database::~Database(){
+    delete instance;
+}
+
+void Database::createTables(){
+    //create tables
+    bool res1 = query.exec("CREATE TABLE IF NOT EXISTS `paths`(`path` TEXT);");
+
+    //check errors
+    if(!res1){
+        qDebug() << "Error in create tables: " << query.lastError();
+        exit(1);
+    }
+}
+
+QStringList Database::getPaths(){
+    QStringList paths;
+
+    //make query
+    query.exec("SELECT * FROM `paths`;");
+    QSqlRecord rec = query.record();
+
+    //parse data
+    while(query.next()){
+        paths << query.value(rec.indexOf("path")).toString();
+    }
+
+    return paths;
+}
+
+bool Database::addPath(QString path){
+    if(this->existsPath(path))
+        return false;
+
+    query.prepare("INSERT INTO `paths` (`path`) VALUES ('?')");
+    query.bindValue(0, path);
+
+    return query.exec();
+}
+
+bool Database::remove(QString path){
+    if(!this->existsPath(path))
+        return false;
+
+    query.prepare("DELETE FROM `paths` WHERE `path` = '?'");
+    query.bindValue(0, path);
+
+    return query.exec();
+}
+
+bool Database::existsPath(QString path){
+    query.prepare("SELECT * FROM `paths` WHERE `path` = '?'");
+    query.bindValue(0, path);
+    query.exec();
+
+    if(query.last()){
+        return query.at() + 1 == 1;
+    }
+    else{
+        qDebug() << "Error";
+        exit(1);
+    }
+}
