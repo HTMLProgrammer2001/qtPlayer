@@ -16,6 +16,7 @@ private:
 
 public:
     ISong(QString path);
+    bool operator==(const ISong);
     void parseData();
 
     QString getPath();

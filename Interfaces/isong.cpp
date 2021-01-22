@@ -3,6 +3,11 @@
 ISong::ISong(QString path): path(path)
 {}
 
+bool ISong::operator==(const ISong song)
+{
+    return this->path == song.path;
+}
+
 QString ISong::getName()
 {
     return name;

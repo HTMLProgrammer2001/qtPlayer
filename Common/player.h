@@ -22,10 +22,14 @@ private:
     QList<ISong> songs;
     SongsMetaParser *parser;
     static Player *instance;
+    int currentIndex;
+    bool isPlay = false;
 
 public:
     Player();
     ~Player();
+
+    void addHandlers();
 
     static Player *getInstance();
     QList<ISong> getSongs();
@@ -39,6 +43,7 @@ signals:
 public slots:
     void changeCurrentSong(ISong song);
     void setSongs(QList<ISong> songs);
+    void changeTime(int time);
 };
 
 #endif // PLAYER_H

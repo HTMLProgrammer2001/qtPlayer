@@ -200,7 +200,7 @@ QLabel:hover{
          <item>
           <widget class="QLabel" name="currentTime">
            <property name="text">
-            <string>0:35</string>
+            <string>00:00</string>
            </property>
           </widget>
          </item>
@@ -234,7 +234,7 @@ QSlider::handle:horizontal {
          <item>
           <widget class="QLabel" name="totalTime">
            <property name="text">
-            <string>3:25</string>
+            <string>00:00</string>
            </property>
           </widget>
          </item>
@@ -247,22 +247,5 @@ QSlider::handle:horizontal {
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>slider</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>currentTime</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>71</x>
-     <y>79</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>26</x>
-     <y>81</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

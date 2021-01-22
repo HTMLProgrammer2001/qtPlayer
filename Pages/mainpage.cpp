@@ -21,6 +21,8 @@ void MainPage::setHandlers()
 
 void MainPage::initUI()
 {
+    this->ui->control->hide();
+
     //add sidebar
     sidebar = new SideBar(this);
     sidebar->setGeometry(0, 0, 0, height());
@@ -44,7 +46,11 @@ void MainPage::showSongs(QList<ISong> songs)
 
     foreach(ISong song, songs){
         //add song item
-        layout->addWidget(new SongItem(song));
+        SongItem* songItem = new SongItem(song);
+        layout->addWidget(songItem);
+
+        //add handler
+        connect(songItem, &SongItem::songChoosed, player, &Player::changeCurrentSong);
     }
 
     layout->addStretch(10);

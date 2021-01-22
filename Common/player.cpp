@@ -20,8 +20,14 @@ Player::Player(): QObject(nullptr)
         }
     }
 
-    parser = new SongsMetaParser(songPaths.toList());
-    connect(parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
+    this->parser = new SongsMetaParser(songPaths.toList());
+    this->addHandlers();
+}
+
+void Player::addHandlers()
+{
+    connect(this->parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
+    connect(this->player, &QMediaPlayer::positionChanged, this, &Player::timeChanged);
 }
 
 QList<ISong> Player::getSongs()
@@ -56,13 +62,28 @@ Player *Player::getInstance()
 
 void Player::changeCurrentSong(ISong song)
 {
-    qDebug() << song.getPath();
+    int index = this->songs.indexOf(song);
+
+    if(index == -1)
+        return;
+
+    this->currentIndex = index;
+    this->player->setMedia(QUrl::fromLocalFile(song.getPath()));
+    this->player->play();
+
+    emit currentSongChanged(song);
 }
 
 void Player::setSongs(QList<ISong> songs)
 {
     this->songs = songs;
     emit songsListChanged(songs);
+}
+
+void Player::changeTime(int position)
+{
+    qDebug() << "Change" << position;
+    this->player->setPosition(position);
 }
 
 Player::~Player()

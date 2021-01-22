@@ -21,7 +21,7 @@ public:
     ~SongItem();
 
 signals:
-    void songChoosed(QString);
+    void songChoosed(ISong);
 
 private:
     Ui::SongItem *ui;

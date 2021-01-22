@@ -21,7 +21,7 @@ void SongItem::initUI()
 
 void SongItem::mousePressEvent(QMouseEvent *event)
 {
-    emit songChoosed(song.getPath());
+    emit songChoosed(this->song);
 }
 
 SongItem::~SongItem()

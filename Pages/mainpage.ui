@@ -303,7 +303,7 @@ QScrollBar::sub-line:vertical{
           </widget>
          </item>
          <item>
-          <widget class="PlayerControl" name="widget" native="true"/>
+          <widget class="PlayerControl" name="control" native="true"/>
          </item>
         </layout>
        </widget>
