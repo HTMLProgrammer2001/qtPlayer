@@ -34,6 +34,7 @@ signals:
 private slots:
     void songChanged(ISong song);
     void changeTime(int time);
+    void playChange(bool isPlay);
 };
 
 #endif // PLAYERCONTROL_H

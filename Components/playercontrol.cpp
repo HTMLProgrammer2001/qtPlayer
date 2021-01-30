@@ -1,5 +1,6 @@
 #include "playercontrol.h"
 #include "ui_playercontrol.h"
+#include "Interfaces/iclickable.h"
 
 #include <QDebug>
 
@@ -26,6 +27,12 @@ void PlayerControl::addHandlers()
     //add handlers
     connect(player, &Player::currentSongChanged, this, &PlayerControl::songChanged);
     connect(player, &Player::timeChanged, this, &PlayerControl::changeTime);
+    connect(player, &Player::playChanged, this, &PlayerControl::playChange);
+
+    connect(ui->prev, &IClickable::change, player, [=](bool){player->prevSong();});
+    connect(ui->next, &IClickable::change, player, [=](bool){player->nextSong();});
+    connect(ui->stop, &IClickable::change, player, [=](bool){player->togglePlay();});
+
     connect(this->ui->slider, &QSlider::sliderReleased, player, [=](){
         player->changeTime(duration * this->ui->slider->value() / 100);
     });
@@ -53,6 +60,12 @@ void PlayerControl::changeTime(int time)
     //change player state
     this->ui->slider->setValue((float)time/duration * 100);
     this->ui->currentTime->setText(QTime::fromMSecsSinceStartOfDay(time).toString("mm:ss"));
+}
+
+void PlayerControl::playChange(bool isPlay)
+{
+    QCommonStyle style;
+    ui->stop->setPixmap(style.standardPixmap(!isPlay ? QStyle::SP_MediaPlay : QStyle::SP_MediaStop).scaledToWidth(20));
 }
 
 PlayerControl::~PlayerControl()

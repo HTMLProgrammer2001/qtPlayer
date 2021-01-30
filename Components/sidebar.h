@@ -20,6 +20,9 @@ private:
 
 public slots:
     void changeSize(bool);
+
+signals:
+    void pageChange(int page);
 };
 
 #endif // SIDEBAR_H

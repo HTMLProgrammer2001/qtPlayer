@@ -12,6 +12,22 @@ MainWindow::MainWindow(QWidget *parent)
     QStackedWidget* stacked = new QStackedWidget;
     stacked->addWidget(new MainPage);
     this->setCentralWidget(stacked);
+
+    this->stack = stacked;
+
+    //add sidebar
+    sidebar = new SideBar(this);
+    sidebar->setGeometry(0, 0, 0, height());
+}
+
+void MainWindow::addHandlers()
+{
+
+}
+
+void MainWindow::resizeEvent(QResizeEvent *ev)
+{
+    sidebar->setGeometry(0, 50, sidebar->width(), height());
 }
 
 MainWindow::~MainWindow()

@@ -23,7 +23,6 @@ private:
     SongsMetaParser *parser;
     static Player *instance;
     int currentIndex;
-    bool isPlay = false;
 
 public:
     Player();
@@ -34,16 +33,22 @@ public:
     static Player *getInstance();
     QList<ISong> getSongs();
     QStringList parsePaths(QString);
+    void changePlayerSong();
 
 signals:
     void currentSongChanged(ISong song);
     void timeChanged(int time);
     void songsListChanged(QList<ISong> songs);
+    void playChanged(bool isPlay);
 
 public slots:
     void changeCurrentSong(ISong song);
     void setSongs(QList<ISong> songs);
     void changeTime(int time);
+    void togglePlay();
+    void nextSong();
+    void prevSong();
+    void changeState(QMediaPlayer::State);
 };
 
 #endif // PLAYER_H

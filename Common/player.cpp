@@ -28,6 +28,7 @@ void Player::addHandlers()
 {
     connect(this->parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
     connect(this->player, &QMediaPlayer::positionChanged, this, &Player::timeChanged);
+    connect(this->player, &QMediaPlayer::stateChanged, this, &Player::changeState);
 }
 
 QList<ISong> Player::getSongs()
@@ -52,6 +53,16 @@ QStringList Player::parsePaths(QString path)
     return songsPaths;
 }
 
+void Player::changePlayerSong()
+{
+    auto song = this->songs.at(this->currentIndex);
+
+    this->player->setMedia(QUrl::fromLocalFile(song.getPath()));
+    this->player->play();
+
+    emit currentSongChanged(song);
+}
+
 Player *Player::getInstance()
 {
     if(instance == nullptr)
@@ -68,10 +79,7 @@ void Player::changeCurrentSong(ISong song)
         return;
 
     this->currentIndex = index;
-    this->player->setMedia(QUrl::fromLocalFile(song.getPath()));
-    this->player->play();
-
-    emit currentSongChanged(song);
+    this->changePlayerSong();
 }
 
 void Player::setSongs(QList<ISong> songs)
@@ -84,6 +92,45 @@ void Player::changeTime(int position)
 {
     qDebug() << "Change" << position;
     this->player->setPosition(position);
+}
+
+void Player::togglePlay()
+{
+    bool isPlay = this->player->state() == QMediaPlayer::PlayingState;
+
+    if(isPlay)
+        this->player->pause();
+    else
+        this->player->play();
+}
+
+void Player::nextSong()
+{
+    //change index
+    this->currentIndex++;
+
+    //reset it if current index more than size
+    if(this->currentIndex >= this->songs.size())
+        this->currentIndex = 0;
+
+    this->changePlayerSong();
+}
+
+void Player::prevSong()
+{
+    //change index
+    this->currentIndex--;
+
+    //reset it if current index more than size
+    if(this->currentIndex < 0)
+        this->currentIndex = this->songs.size() - 1;
+
+    this->changePlayerSong();
+}
+
+void Player::changeState(QMediaPlayer::State state)
+{
+    emit playChanged(state == QMediaPlayer::PlayingState);
 }
 
 Player::~Player()

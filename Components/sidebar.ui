@@ -26,7 +26,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background: #fff;
+font: 75 10pt &quot;Arial&quot;;
+</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -44,11 +46,17 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="styleSheet">
-      <string notr="true">background: #fff;</string>
+      <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLabel" name="label">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string notr="true">active</string>
+        </property>
         <property name="text">
          <string>Songs</string>
         </property>
@@ -56,6 +64,9 @@
       </item>
       <item>
        <widget class="QLabel" name="label_2">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>Resources</string>
         </property>
@@ -63,6 +74,9 @@
       </item>
       <item>
        <widget class="QLabel" name="label_3">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="text">
          <string>TextLabel</string>
         </property>

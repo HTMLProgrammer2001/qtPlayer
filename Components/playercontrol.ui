@@ -144,7 +144,7 @@ QLabel:hover{
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QLabel" name="prev">
+             <widget class="IClickable" name="prev">
               <property name="cursor">
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
@@ -157,7 +157,7 @@ QLabel:hover{
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="stop">
+             <widget class="IClickable" name="stop">
               <property name="cursor">
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
@@ -167,7 +167,7 @@ QLabel:hover{
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="next">
+             <widget class="IClickable" name="next">
               <property name="cursor">
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
@@ -246,6 +246,13 @@ QSlider::handle:horizontal {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IClickable</class>
+   <extends>QLabel</extends>
+   <header>Interfaces/iclickable.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
