@@ -42,7 +42,16 @@ void MainPage::initUI()
 
 void MainPage::showSongs(QList<ISong> songs)
 {
-    QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
+    QVBoxLayout *oldLayout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
+    delete oldLayout;
+    qDeleteAll(ui->scrollAreaWidgetContents->children());
+
+    QVBoxLayout* layout = new QVBoxLayout();
+
+    while(layout->count() > 0){
+        auto item = layout->takeAt(0);
+        layout->removeItem(item);
+    }
 
     foreach(ISong song, songs){
         //add song item
@@ -54,6 +63,7 @@ void MainPage::showSongs(QList<ISong> songs)
     }
 
     layout->addStretch(10);
+    ui->scrollAreaWidgetContents->setLayout(layout);
 }
 
 void MainPage::menuChange(bool isActive)

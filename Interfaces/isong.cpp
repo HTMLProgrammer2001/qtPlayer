@@ -57,3 +57,13 @@ void ISong::setDuration(uint dur)
 {
     this->duration = dur;
 }
+
+bool ISong::operator>(ISong &song)
+{
+    return this->getName() > song.getName();
+}
+
+bool ISong::operator<(ISong &song)
+{
+    return this->getName() < song.getName();
+}

@@ -1,4 +1,5 @@
 #include "player.h"
+#include "algorithm"
 
 Player *Player::instance = nullptr;
 
@@ -20,7 +21,7 @@ Player::Player(): QObject(nullptr)
         }
     }
 
-    this->parser = new SongsMetaParser(songPaths.toList());
+    this->parser = new SongsMetaParser(songPaths.values());
     this->addHandlers();
 }
 
@@ -33,7 +34,17 @@ void Player::addHandlers()
 
 QList<ISong> Player::getSongs()
 {
-    return songs;
+    QList<ISong> filteredList;
+
+    //filter list
+    foreach(ISong song, songs){
+        if(song.getName().toLower().indexOf(this->filter) != -1)
+            filteredList << song;
+    }
+
+    //sort list
+    std::sort(filteredList.begin(), filteredList.end());
+    return filteredList;
 }
 
 QStringList Player::parsePaths(QString path)
@@ -55,7 +66,7 @@ QStringList Player::parsePaths(QString path)
 
 void Player::changePlayerSong()
 {
-    auto song = this->songs.at(this->currentIndex);
+    auto song = this->getSongs().at(this->currentIndex);
 
     this->player->setMedia(QUrl::fromLocalFile(song.getPath()));
     this->player->play();
@@ -73,7 +84,7 @@ Player *Player::getInstance()
 
 void Player::changeCurrentSong(ISong song)
 {
-    int index = this->songs.indexOf(song);
+    int index = this->getSongs().indexOf(song);
 
     if(index == -1)
         return;
@@ -85,7 +96,7 @@ void Player::changeCurrentSong(ISong song)
 void Player::setSongs(QList<ISong> songs)
 {
     this->songs = songs;
-    emit songsListChanged(songs);
+    emit songsListChanged(this->getSongs());
 }
 
 void Player::changeTime(int position)
@@ -131,6 +142,12 @@ void Player::prevSong()
 void Player::changeState(QMediaPlayer::State state)
 {
     emit playChanged(state == QMediaPlayer::PlayingState);
+}
+
+void Player::changeFilter(QString filter)
+{
+    this->filter = filter;
+    emit songsListChanged(this->getSongs());
 }
 
 Player::~Player()

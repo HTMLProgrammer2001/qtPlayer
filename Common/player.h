@@ -23,6 +23,7 @@ private:
     SongsMetaParser *parser;
     static Player *instance;
     int currentIndex;
+    QString filter = "";
 
 public:
     Player();
@@ -49,6 +50,7 @@ public slots:
     void nextSong();
     void prevSong();
     void changeState(QMediaPlayer::State);
+    void changeFilter(QString filter);
 };
 
 #endif // PLAYER_H

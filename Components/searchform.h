@@ -18,6 +18,7 @@ public:
 
 private:
     Ui::SearchForm *ui;
+    void addHandlers();
 
 public slots:
     void changeVisible(bool);

@@ -31,6 +31,9 @@ public:
     void setDuration(uint);
 
     int getSize();
+
+    bool operator>(ISong &song);
+    bool operator<(ISong &song);
 };
 
 #endif // ISONG_H

@@ -192,6 +192,61 @@ font: 87 16pt &quot;Arial&quot;;</string>
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>15</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: 75 10pt &quot;Arial&quot;;
+color: rgb(79, 147, 255);
+
+QLabel::hover{
+	color: rgb(42, 109, 255)
+}</string>
+          </property>
+          <property name="text">
+           <string>Ascend sort</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: 75 10pt &quot;Arial&quot;;
+color: rgb(79, 147, 255);
+
+QLabel::hover{
+	color: rgb(42, 109, 255)
+}</string>
+          </property>
+          <property name="text">
+           <string>Reload</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QWidget" name="content" native="true">
         <property name="styleSheet">
          <string notr="true">QScrollBar:vertical
@@ -266,7 +321,7 @@ QScrollBar::sub-line:vertical{
               <x>0</x>
               <y>0</y>
               <width>398</width>
-              <height>332</height>
+              <height>300</height>
              </rect>
             </property>
             <property name="styleSheet">
