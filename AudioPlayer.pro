@@ -25,7 +25,8 @@ FORMS += \
     Components/playercontrol.ui \
     Components/searchform.ui \
     Components/sidebar.ui \
-    Components/songitem.ui
+    Components/songitem.ui \
+    pages/pathspage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

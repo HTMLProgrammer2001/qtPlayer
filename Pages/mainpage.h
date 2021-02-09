@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QGraphicsOpacityEffect>
 #include <QVariantAnimation>
+#include <QMovie>
 
 #include "Components/searchform.h"
 #include "Components/sidebar.h"

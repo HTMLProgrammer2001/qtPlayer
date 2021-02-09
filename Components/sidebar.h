@@ -13,6 +13,7 @@ class SideBar : public QWidget
 
 public:
     explicit SideBar(QWidget *parent = nullptr);
+    void mousePressEvent(QMouseEvent *event) override;
     ~SideBar();
 
 private:

@@ -64,15 +64,23 @@ void MainPage::showSongs(QList<ISong> songs)
     }
 
     if(player->getLoading()){
-        //set label
-        QLabel *label = new QLabel("Loading...");
+        layout->addStretch(10);
+
+        //show loader
+        QMovie *loader = new QMovie(":/images/loader.gif");
+
+        QLabel *label = new QLabel;
         label->setAlignment(Qt::AlignCenter);
-        label->setStyleSheet("color: #aaa; font-size: 12pt");
+        label->setMovie(loader);
 
         layout->addWidget(label);
+
+        loader->start();
     }
     else{
         if(songs.size() == 0){
+            layout->addStretch(10);
+
             //set label
             QLabel *label = new QLabel("No items");
             label->setAlignment(Qt::AlignCenter);

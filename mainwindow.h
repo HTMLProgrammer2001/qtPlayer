@@ -21,7 +21,8 @@ public:
 public:
     MainWindow(QWidget *parent = nullptr);
     void addHandlers();
-    void resizeEvent(QResizeEvent* ev);
+    void resizeEvent(QResizeEvent* ev) override;
+    bool event(QEvent *event) override;
     ~MainWindow();
 
 private:
