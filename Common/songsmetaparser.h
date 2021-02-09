@@ -21,8 +21,9 @@ private:
     QMediaPlayer *player;
 
 public:
-    explicit SongsMetaParser(QStringList paths);
+    explicit SongsMetaParser();
     void parseCurrentData();
+    void setPaths(QStringList paths);
 
 signals:
     void songsParsed(QList<ISong> songs);

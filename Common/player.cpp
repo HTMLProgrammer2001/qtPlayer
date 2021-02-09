@@ -5,14 +5,23 @@ Player *Player::instance = nullptr;
 
 Player::Player(): QObject(nullptr)
 {
-    songs = {};
     player = new QMediaPlayer(this);
+    this->addHandlers();
+    this->reload();
+}
 
+void Player::reload()
+{
+    //reset state
+    songs = {};
+
+    //get dirs
     Database *db = Database::getInstance();
     QStringList savedPaths = db->getPaths();
 
     QSet<QString> songPaths = {};
 
+    //parse songs paths
     foreach(QString savedPath, savedPaths){
         QStringList songs = parsePaths(savedPath);
 
@@ -21,13 +30,26 @@ Player::Player(): QObject(nullptr)
         }
     }
 
-    this->parser = new SongsMetaParser(songPaths.values());
-    this->addHandlers();
+    //start loading
+    isLoading = true;
+    emit changeLoading(isLoading);
+    this->parser.setPaths(songPaths.values());
+}
+
+bool Player::getLoading()
+{
+    return isLoading;
+}
+
+void Player::changeSort(bool isReversed)
+{
+    this->isReversed = isReversed;
+    emit songsListChanged(this->getSongs());
 }
 
 void Player::addHandlers()
 {
-    connect(this->parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
+    connect(&this->parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
     connect(this->player, &QMediaPlayer::positionChanged, this, &Player::timeChanged);
     connect(this->player, &QMediaPlayer::stateChanged, this, &Player::changeState);
 }
@@ -38,12 +60,16 @@ QList<ISong> Player::getSongs()
 
     //filter list
     foreach(ISong song, songs){
-        if(song.getName().toLower().indexOf(this->filter) != -1)
+        if(song.getName().toLower().indexOf(this->filter.toLower()) != -1)
             filteredList << song;
     }
 
     //sort list
     std::sort(filteredList.begin(), filteredList.end());
+
+    if(isReversed)
+        std::reverse(filteredList.begin(), filteredList.end());
+
     return filteredList;
 }
 
@@ -52,11 +78,14 @@ QStringList Player::parsePaths(QString path)
     QStringList songsPaths;
     QDir dir(path);
 
+    //check directory exists
     if(!dir.exists())
         return songsPaths;
 
+    //set filters
     QStringList musicFiles = dir.entryList(QStringList() << "*.mp3", QDir::Readable | QDir::Files);
 
+    //parse path
     foreach(QString filename, musicFiles){
         songsPaths << QDir::cleanPath(path + QDir::separator() + filename);
     }
@@ -95,8 +124,13 @@ void Player::changeCurrentSong(ISong song)
 
 void Player::setSongs(QList<ISong> songs)
 {
+    //change songs
     this->songs = songs;
     emit songsListChanged(this->getSongs());
+
+    //stop loading
+    isLoading = false;
+    emit changeLoading(isLoading);
 }
 
 void Player::changeTime(int position)
@@ -108,11 +142,7 @@ void Player::changeTime(int position)
 void Player::togglePlay()
 {
     bool isPlay = this->player->state() == QMediaPlayer::PlayingState;
-
-    if(isPlay)
-        this->player->pause();
-    else
-        this->player->play();
+    isPlay ? this->player->pause() : this->player->play();
 }
 
 void Player::nextSong()
@@ -121,7 +151,7 @@ void Player::nextSong()
     this->currentIndex++;
 
     //reset it if current index more than size
-    if(this->currentIndex >= this->songs.size())
+    if(this->currentIndex >= this->getSongs().size())
         this->currentIndex = 0;
 
     this->changePlayerSong();
@@ -134,7 +164,7 @@ void Player::prevSong()
 
     //reset it if current index more than size
     if(this->currentIndex < 0)
-        this->currentIndex = this->songs.size() - 1;
+        this->currentIndex = this->getSongs().size() - 1;
 
     this->changePlayerSong();
 }

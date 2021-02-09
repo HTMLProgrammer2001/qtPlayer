@@ -10,13 +10,23 @@ MainPage::MainPage(QWidget *parent)
     ui->setupUi(this);
     initUI();
     setHandlers();
+    showSongs({});
 }
 
 void MainPage::setHandlers()
 {
-    connect(ui->burger, SIGNAL(change(bool)), this, SLOT(menuChange(bool)));
-    connect(ui->search, SIGNAL(change(bool)), form, SLOT(changeVisible(bool)));
-    connect(ui->burger, SIGNAL(change(bool)), sidebar, SLOT(changeSize(bool)));
+    connect(ui->burger, &IClickable::change, this, &MainPage::menuChange);
+    connect(ui->search, &IClickable::change, form, &SearchForm::changeVisible);
+    connect(ui->burger, &IClickable::change, sidebar, &SideBar::changeSize);
+    connect(ui->sort, &IClickable::change, player, &Player::changeSort);
+
+    connect(player, &Player::changeLoading, this, [&](bool){
+        showSongs(player->getSongs());
+    });
+
+    connect(ui->reload, &IClickable::change, player, [&](bool){
+        player->reload();
+    });
 }
 
 void MainPage::initUI()
@@ -53,13 +63,33 @@ void MainPage::showSongs(QList<ISong> songs)
         layout->removeItem(item);
     }
 
-    foreach(ISong song, songs){
-        //add song item
-        SongItem* songItem = new SongItem(song);
-        layout->addWidget(songItem);
+    if(player->getLoading()){
+        //set label
+        QLabel *label = new QLabel("Loading...");
+        label->setAlignment(Qt::AlignCenter);
+        label->setStyleSheet("color: #aaa; font-size: 12pt");
 
-        //add handler
-        connect(songItem, &SongItem::songChoosed, player, &Player::changeCurrentSong);
+        layout->addWidget(label);
+    }
+    else{
+        if(songs.size() == 0){
+            //set label
+            QLabel *label = new QLabel("No items");
+            label->setAlignment(Qt::AlignCenter);
+            label->setStyleSheet("color: #aaa; font-size: 12pt");
+
+            layout->addWidget(label);
+        }
+        else{
+            foreach(ISong song, songs){
+                //add song item
+                SongItem* songItem = new SongItem(song);
+                layout->addWidget(songItem);
+
+                //add handler
+                connect(songItem, &SongItem::songChoosed, player, &Player::changeCurrentSong);
+            }
+        }
     }
 
     layout->addStretch(10);

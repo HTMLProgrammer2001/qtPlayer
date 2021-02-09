@@ -20,10 +20,12 @@ class Player: public QObject
 private:
     QMediaPlayer *player;
     QList<ISong> songs;
-    SongsMetaParser *parser;
+    SongsMetaParser parser;
     static Player *instance;
     int currentIndex;
     QString filter = "";
+    bool isReversed = false;
+    bool isLoading = false;
 
 public:
     Player();
@@ -33,6 +35,8 @@ public:
 
     static Player *getInstance();
     QList<ISong> getSongs();
+    bool getLoading();
+    bool getSort();
     QStringList parsePaths(QString);
     void changePlayerSong();
 
@@ -41,6 +45,7 @@ signals:
     void timeChanged(int time);
     void songsListChanged(QList<ISong> songs);
     void playChanged(bool isPlay);
+    void changeLoading(bool isLoading);
 
 public slots:
     void changeCurrentSong(ISong song);
@@ -51,6 +56,8 @@ public slots:
     void prevSong();
     void changeState(QMediaPlayer::State);
     void changeFilter(QString filter);
+    void reload();
+    void changeSort(bool isReversed);
 };
 
 #endif // PLAYER_H

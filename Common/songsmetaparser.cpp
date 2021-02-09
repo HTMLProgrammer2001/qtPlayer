@@ -1,12 +1,18 @@
 #include "songsmetaparser.h"
 
-SongsMetaParser::SongsMetaParser(QStringList paths) : QObject(nullptr), paths(paths)
+SongsMetaParser::SongsMetaParser() : QObject(nullptr)
 {
+    //add handler
     player = new QMediaPlayer(this);
     connect(player, &QMediaPlayer::mediaStatusChanged, this, &SongsMetaParser::metaAvailable);
+}
+
+void SongsMetaParser::setPaths(QStringList paths)
+{
+    this->paths = paths;
 
     songs = {};
-
+    cur = 0;
     parseCurrentData();
 }
 
@@ -26,11 +32,13 @@ void SongsMetaParser::metaAvailable(bool available){
 
     ISong song(paths.at(this->cur));
 
+    //parse song data
     QString name = player->metaData(QMediaMetaData::Title).toString();
     QString author = player->metaData(QMediaMetaData::Author).toString();
     QString album = player->metaData(QMediaMetaData::AlbumArtist).toString();
     uint duration = player->metaData(QMediaMetaData::Duration).toInt();
 
+    //create song
     song.setName(!name.isNull() ? name : "Unknown");
     song.setAuthor(!author.isNull() ? author : "Unknown");
     song.setAlbum(!album.isNull() ? album : "Unknown");
@@ -38,6 +46,7 @@ void SongsMetaParser::metaAvailable(bool available){
 
     songs << song;
 
+    //continue parsing
     this->cur++;
     parseCurrentData();
 }
