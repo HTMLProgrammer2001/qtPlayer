@@ -50,7 +50,7 @@ font: 75 10pt &quot;Arial&quot;;
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="songs">
+       <widget class="IClickable" name="songs_page">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -66,7 +66,7 @@ font: 75 10pt &quot;Arial&quot;;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="resources">
+       <widget class="IClickable" name="resources_page">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -79,7 +79,7 @@ font: 75 10pt &quot;Arial&quot;;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="lists">
+       <widget class="IClickable" name="lists_page">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -109,6 +109,13 @@ font: 75 10pt &quot;Arial&quot;;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IClickable</class>
+   <extends>QLabel</extends>
+   <header location="global">interfaces\iclickable.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -40,7 +40,6 @@ bool MainWindow::event(QEvent *event)
         return QWidget::event(event);
 
     qDebug() << "Page change";
-
     PageChangeEvent* pageEvent = static_cast<PageChangeEvent*>(event);
 
     if(pageEvent->getPage() == "resources")

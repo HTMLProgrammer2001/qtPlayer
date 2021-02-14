@@ -5,15 +5,23 @@
 #include "sidebar.h"
 #include "ui_sidebar.h"
 #include "Events/pagechangeevent.h"
+#include "Interfaces/iclickable.h"
 
-SideBar::SideBar(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SideBar)
+SideBar::SideBar(QWidget *parent) : QWidget(parent), ui(new Ui::SideBar)
 {
     ui->setupUi(this);
+    addHandlers();
 }
 
-void SideBar::mousePressEvent(QMouseEvent *event)
+void SideBar::addHandlers()
+{
+    QList<IClickable*> pageLabels = this->findChildren<IClickable*>(QRegExp("^*_page$"));
+
+    foreach(IClickable* pageLbl, pageLabels)
+        connect(pageLbl, &IClickable::change, this, &SideBar::changePage);
+}
+
+void SideBar::changePage(bool)
 {
     QObject* elem = this;
 
@@ -21,16 +29,10 @@ void SideBar::mousePressEvent(QMouseEvent *event)
     while(elem->parent())
         elem = elem->parent();
 
-    qDebug() << sender();
+   QVariant page = this->sender()->property("page");
 
-    return;
-
-    QVariant pageProp = this->sender()->property("page");
-
-    if(pageProp.isNull() || !pageProp.isValid())
-        return;
-
-    QCoreApplication::sendEvent(elem, new PageChangeEvent(pageProp.toString()));
+   if(page.isValid() && !page.isNull())
+      QCoreApplication::sendEvent(elem, new PageChangeEvent(page.toString()));
 }
 
 SideBar::~SideBar()
@@ -40,7 +42,6 @@ SideBar::~SideBar()
 
 void SideBar::changeSize(bool isActive)
 {
-
     //animate change
     QPropertyAnimation* anim = new QPropertyAnimation(this, "geometry");
     anim->setStartValue(QRect(0, 50, isActive ? 0 : 200, height()));

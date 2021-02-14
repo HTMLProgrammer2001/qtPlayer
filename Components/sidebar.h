@@ -13,7 +13,7 @@ class SideBar : public QWidget
 
 public:
     explicit SideBar(QWidget *parent = nullptr);
-    void mousePressEvent(QMouseEvent *event) override;
+    void addHandlers();
     ~SideBar();
 
 private:
@@ -21,6 +21,7 @@ private:
 
 public slots:
     void changeSize(bool);
+    void changePage(bool);
 
 signals:
     void pageChange(int page);
