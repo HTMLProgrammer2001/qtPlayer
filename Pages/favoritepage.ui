@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PathsPage</class>
- <widget class="QWidget" name="PathsPage">
+ <class>FavoritePage</class>
+ <widget class="QWidget" name="FavoritePage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>400</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -140,30 +140,6 @@ font: 87 16pt &quot;Arial&quot;;</string>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTableView" name="tableView"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="add">
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="remove">
-     <property name="text">
-      <string>Delete</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="edit">
-     <property name="text">
-      <string>Edit</string>
-     </property>
     </widget>
    </item>
    <item>

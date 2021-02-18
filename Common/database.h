@@ -23,7 +23,14 @@ public:
     QStringList getPaths();
     bool existsPath(QString path);
     bool addPath(QString path);
-    bool remove(QString path);
+    bool removePath(QString path);
+    bool editPath(QString curPath, QString newPath);
+
+//    QStringList getFavorites();
+//    bool existsFavorite(QString path);
+//    bool addFavorite(QString path);
+//    bool removeFavorite(QString path);
+//    bool editPath(QString curPath, QString newPath);
 };
 
 #endif // DATABASE_H

@@ -79,15 +79,15 @@ font: 75 10pt &quot;Arial&quot;;
        </widget>
       </item>
       <item>
-       <widget class="IClickable" name="lists_page">
+       <widget class="IClickable" name="favorite_page">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string>Play lists</string>
+         <string>Favorite</string>
         </property>
         <property name="page" stdset="0">
-         <string>playlists</string>
+         <string>favorite</string>
         </property>
        </widget>
       </item>
@@ -113,7 +113,7 @@ font: 75 10pt &quot;Arial&quot;;
   <customwidget>
    <class>IClickable</class>
    <extends>QLabel</extends>
-   <header location="global">interfaces\iclickable.h</header>
+   <header>Interfaces/iclickable.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

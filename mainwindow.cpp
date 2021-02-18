@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "Pages/mainpage.h"
 #include "Pages/pathspage.h"
+#include "Pages/favoritepage.h"
 #include "Common/globals.h"
 #include "Events/pagechangeevent.h"
 
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     QStackedWidget* stacked = new QStackedWidget;
     stacked->addWidget(new MainPage);
     stacked->addWidget(new PathsPage());
+    stacked->addWidget(new FavoritePage());
     this->setCentralWidget(stacked);
 
     this->stack = stacked;
@@ -39,11 +41,12 @@ bool MainWindow::event(QEvent *event)
     if(event->type() != Globals::eventType)
         return QWidget::event(event);
 
-    qDebug() << "Page change";
     PageChangeEvent* pageEvent = static_cast<PageChangeEvent*>(event);
 
     if(pageEvent->getPage() == "resources")
         this->stack->setCurrentIndex(1);
+    else if(pageEvent->getPage() == "favorite")
+        this->stack->setCurrentIndex(2);
     else
         this->stack->setCurrentIndex(0);
 

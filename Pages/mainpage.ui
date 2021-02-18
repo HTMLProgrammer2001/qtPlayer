@@ -219,7 +219,7 @@ QLabel::hover{
 }</string>
           </property>
           <property name="text">
-           <string>Ascend sort</string>
+           <string>Change sort</string>
           </property>
          </widget>
         </item>

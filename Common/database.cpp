@@ -52,43 +52,50 @@ QStringList Database::getPaths(){
     QSqlRecord rec = query.record();
 
     //parse data
-    while(query.next()){
+    while(query.next())
         paths << query.value(rec.indexOf("path")).toString();
-    }
 
     return paths;
 }
 
 bool Database::addPath(QString path){
-    if(this->existsPath(path))
+    if(this->existsPath(path)){
+        qDebug() << "Exists";
         return false;
+    }
 
-    query.prepare("INSERT INTO `paths` (`path`) VALUES ('?')");
+    query.prepare("INSERT INTO `paths` (`path`) VALUES (?);");
     query.bindValue(0, path);
 
     return query.exec();
 }
 
-bool Database::remove(QString path){
+bool Database::removePath(QString path){
     if(!this->existsPath(path))
         return false;
 
-    query.prepare("DELETE FROM `paths` WHERE `path` = '?'");
+    query.prepare("DELETE FROM `paths` WHERE `path` = ?;");
     query.bindValue(0, path);
 
     return query.exec();
 }
 
 bool Database::existsPath(QString path){
-    query.prepare("SELECT * FROM `paths` WHERE `path` = '?'");
+    query.prepare("SELECT * FROM `paths` WHERE `path` = ?;");
     query.bindValue(0, path);
     query.exec();
 
-    if(query.last()){
-        return query.at() + 1 == 1;
-    }
-    else{
-        qDebug() << "Error";
-        exit(1);
-    }
+    return query.next();
+}
+
+bool Database::editPath(QString curPath, QString newPath)
+{
+    if(!this->existsPath(curPath))
+        return false;
+
+    query.prepare("UPDATE `paths` SET `path` = ? WHERE `path` = ?");
+    query.bindValue(0, newPath);
+    query.bindValue(1, curPath);
+
+    return query.exec();
 }
