@@ -20,7 +20,6 @@ SOURCES = $$files(*.cpp, true)
 HEADERS = $$files(*.h, true)
 
 FORMS += \
-    Components/header.ui \
     Pages/favoritepage.ui \
     Pages/mainpage.ui \
     mainwindow.ui \

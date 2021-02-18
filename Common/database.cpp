@@ -36,9 +36,10 @@ Database::~Database(){
 void Database::createTables(){
     //create tables
     bool res1 = query.exec("CREATE TABLE IF NOT EXISTS `paths`(`path` TEXT);");
+    bool res2 = query.exec("CREATE TABLE IF NOT EXISTS `favorites`(`path` TEXT);");
 
     //check errors
-    if(!res1){
+    if(!res1 || !res2){
         qDebug() << "Error in create tables: " << query.lastError();
         exit(1);
     }

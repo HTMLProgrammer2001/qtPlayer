@@ -143,17 +143,54 @@ font: 87 16pt &quot;Arial&quot;;</string>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="styleSheet">
+      <string notr="true">padding: 0;</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-    </spacer>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>398</width>
+        <height>242</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">[accessibleName=&quot;playItem&quot;]:hover{
+	background: #eee;
+}
+
+[accessibleName=&quot;playItem&quot;] *{
+	background: transparent;
+}
+
+[accessibleName=&quot;active&quot;] QWidget{
+	background: #aaa;
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
