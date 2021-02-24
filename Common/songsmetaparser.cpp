@@ -43,6 +43,7 @@ void SongsMetaParser::metaAvailable(bool available){
     song.setAuthor(!author.isNull() ? author : "Unknown");
     song.setAlbum(!album.isNull() ? album : "Unknown");
     song.setDuration(duration);
+    song.setLiked(Database::getInstance()->existsFavorite(paths.at(this->cur)));
 
     songs << song;
 

@@ -38,6 +38,11 @@ int ISong::getSize()
     return size;
 }
 
+bool ISong::getLiked()
+{
+    return isLiked;
+}
+
 void ISong::setName(QString name)
 {
     this->name = name;
@@ -56,6 +61,10 @@ void ISong::setAuthor(QString author)
 void ISong::setDuration(uint dur)
 {
     this->duration = dur;
+}
+
+void ISong::setLiked(bool isLiked){
+    this->isLiked = isLiked;
 }
 
 bool ISong::operator>(ISong &song)

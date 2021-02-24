@@ -2,12 +2,17 @@
 #include "ui_mainpage.h"
 #include "Components/burger.h"
 #include "Common/database.h"
+#include "Common/Sources/allsongssource.h"
 
 MainPage::MainPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MainPage)
 {
     ui->setupUi(this);
+
+    //init songs
+    this->player = Player::getInstance();
+
     initUI();
     setHandlers();
     showSongs({});
@@ -19,6 +24,7 @@ void MainPage::setHandlers()
     connect(ui->search, &IClickable::change, form, &SearchForm::changeVisible);
     connect(ui->burger, &IClickable::change, sidebar, &SideBar::changeSize);
     connect(ui->sort, &IClickable::change, player, &Player::changeSort);
+    connect(player, &Player::songsListChanged, this, &MainPage::showSongs);
 
     connect(player, &Player::changeLoading, this, [&](bool){
         showSongs(player->getSongs());
@@ -44,10 +50,11 @@ void MainPage::initUI()
     eff->setOpacity(0);
 
     form->setGraphicsEffect(eff);
+}
 
-    //init songs
-    player = Player::getInstance();
-    connect(player, &Player::songsListChanged, this, &MainPage::showSongs);
+void MainPage::showEvent(QShowEvent *event)
+{
+    this->player->setSource(new AllSource);
 }
 
 void MainPage::showSongs(QList<ISong> songs)

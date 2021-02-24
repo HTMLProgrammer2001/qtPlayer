@@ -2,12 +2,14 @@
 
 #include "pathspage.h"
 #include "ui_pathspage.h"
+#include "Common/database.h"
 
 PathsPage::PathsPage(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PathsPage)
 {
     ui->setupUi(this);
+    this->db = Database::getInstance();
 
     initUI();
     initTable();
@@ -19,6 +21,7 @@ void PathsPage::initTable()
     this->model = new QSqlTableModel();
     this->model->setTable("paths");
     this->model->select();
+    qDebug() << this->model->rowCount();
     ui->tableView->setModel(this->model);
 }
 
@@ -48,7 +51,11 @@ void PathsPage::addHandlers()
 void PathsPage::addRow()
 {
     QString path = QFileDialog::getExistingDirectory(this);
-    auto db = Database::getInstance();
+
+    if(path.isEmpty()){
+        QMessageBox::warning(this, "Error", "Select path");
+        return;
+    }
 
     if(db->addPath(path))
         this->model->select();

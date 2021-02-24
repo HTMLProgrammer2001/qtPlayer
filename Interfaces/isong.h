@@ -13,6 +13,7 @@ private:
     QString name;
     uint duration;
     int size;
+    bool isLiked = false;
 
 public:
     ISong(QString path);
@@ -24,11 +25,13 @@ public:
     QString getAlbum();
     QString getName();
     uint getDuration();
+    bool getLiked();
 
     void setAuthor(QString);
     void setAlbum(QString);
     void setName(QString);
     void setDuration(uint);
+    void setLiked(bool);
 
     int getSize();
 

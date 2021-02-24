@@ -100,3 +100,54 @@ bool Database::editPath(QString curPath, QString newPath)
 
     return query.exec();
 }
+
+QStringList Database::getFavorites(){
+    QStringList paths;
+
+    //make query
+    query.exec("SELECT * FROM `favorites`;");
+    QSqlRecord rec = query.record();
+
+    //parse data
+    while(query.next())
+        paths << query.value(rec.indexOf("path")).toString();
+
+    return paths;
+}
+
+bool Database::addFavorite(QString path){
+    if(this->existsFavorite(path)){
+        qDebug() << "Exists";
+        return false;
+    }
+
+    query.prepare("INSERT INTO `favorites` (`path`) VALUES (?);");
+    query.bindValue(0, path);
+
+    return query.exec();
+}
+
+bool Database::removeFavorite(QString path){
+    if(!this->existsFavorite(path))
+        return false;
+
+    query.prepare("DELETE FROM `favorites` WHERE `path` = ?;");
+    query.bindValue(0, path);
+
+    return query.exec();
+}
+
+bool Database::existsFavorite(QString path){
+    query.prepare("SELECT * FROM `favorites` WHERE `path` = ?;");
+    query.bindValue(0, path);
+    query.exec();
+
+    return query.next();
+}
+
+bool Database::toggleFavorite(QString path){
+    if(this->existsFavorite(path))
+        return this->removeFavorite(path);
+    else
+        return this->addFavorite(path);
+}

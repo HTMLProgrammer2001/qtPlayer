@@ -26,11 +26,11 @@ public:
     bool removePath(QString path);
     bool editPath(QString curPath, QString newPath);
 
-//    QStringList getFavorites();
-//    bool existsFavorite(QString path);
-//    bool addFavorite(QString path);
-//    bool removeFavorite(QString path);
-//    bool editPath(QString curPath, QString newPath);
+    QStringList getFavorites();
+    bool existsFavorite(QString path);
+    bool addFavorite(QString path);
+    bool removeFavorite(QString path);
+    bool toggleFavorite(QString path);
 };
 
 #endif // DATABASE_H

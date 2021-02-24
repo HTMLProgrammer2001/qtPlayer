@@ -11,6 +11,7 @@
 #include <QtMultimedia/QMediaPlayer>
 
 #include "Interfaces/isong.h"
+#include "Interfaces/isource.h"
 #include "database.h"
 #include "songsmetaparser.h"
 
@@ -26,6 +27,7 @@ private:
     QString filter = "";
     bool isReversed = false;
     bool isLoading = false;
+    ISource *source = nullptr;
 
 public:
     Player();
@@ -37,8 +39,8 @@ public:
     QList<ISong> getSongs();
     bool getLoading();
     bool getSort();
-    QStringList parsePaths(QString);
     void changePlayerSong();
+    void setSource(ISource*);
 
 signals:
     void currentSongChanged(ISong song);
@@ -58,6 +60,7 @@ public slots:
     void changeFilter(QString filter);
     void reload();
     void changeSort(bool isReversed);
+    void toggleLike(QString path);
 };
 
 #endif // PLAYER_H

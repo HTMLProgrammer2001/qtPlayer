@@ -17,6 +17,7 @@ class PathsPage : public QWidget
     Q_OBJECT
 
 private:
+    Database *db = nullptr;
     QSqlTableModel *model = nullptr;
 
 public:

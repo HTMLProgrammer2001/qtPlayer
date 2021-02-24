@@ -7,33 +7,25 @@ Player::Player(): QObject(nullptr)
 {
     player = new QMediaPlayer(this);
     this->addHandlers();
-    this->reload();
 }
 
 void Player::reload()
 {
     //reset state
-    songs = {};
+    this->songs = {};
 
-    //get dirs
-    Database *db = Database::getInstance();
-    QStringList savedPaths = db->getPaths();
-
-    QSet<QString> songPaths = {};
-
-    //parse songs paths
-    foreach(QString savedPath, savedPaths){
-        QStringList songs = parsePaths(savedPath);
-
-        foreach(QString path, songs){
-            songPaths << path;
-        }
-    }
+    auto songPaths = this->source->getPaths();
 
     //start loading
-    isLoading = true;
-    emit changeLoading(isLoading);
-    this->parser.setPaths(songPaths.values());
+    this->isLoading = true;
+    emit changeLoading(this->isLoading);
+    this->parser.setPaths(songPaths);
+}
+
+void Player::setSource(ISource *source)
+{
+    this->source = source;
+    this->reload();
 }
 
 bool Player::getLoading()
@@ -71,26 +63,6 @@ QList<ISong> Player::getSongs()
         std::reverse(filteredList.begin(), filteredList.end());
 
     return filteredList;
-}
-
-QStringList Player::parsePaths(QString path)
-{
-    QStringList songsPaths;
-    QDir dir(path);
-
-    //check directory exists
-    if(!dir.exists())
-        return songsPaths;
-
-    //set filters
-    QStringList musicFiles = dir.entryList(QStringList() << "*.mp3", QDir::Readable | QDir::Files);
-
-    //parse path
-    foreach(QString filename, musicFiles){
-        songsPaths << QDir::cleanPath(path + QDir::separator() + filename);
-    }
-
-    return songsPaths;
 }
 
 void Player::changePlayerSong()
@@ -178,6 +150,23 @@ void Player::changeFilter(QString filter)
 {
     this->filter = filter;
     emit songsListChanged(this->getSongs());
+}
+
+void Player::toggleLike(QString path)
+{
+    auto db = Database::getInstance();
+    int index = 0;
+
+    if(db->toggleFavorite(path)){
+        foreach(ISong song, songs){
+            if(song.getPath() != path)
+                index++;
+            else{
+                songs[index].setLiked(!song.getLiked());
+                emit currentSongChanged(this->getSongs()[this->currentIndex]);
+            }
+        }
+    }
 }
 
 Player::~Player()

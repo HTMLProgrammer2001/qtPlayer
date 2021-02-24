@@ -28,6 +28,7 @@ public:
     void setHandlers();
     void initUI();
     ~MainPage();
+    void showEvent(QShowEvent *event) override;
 
 private:
     Ui::MainPage *ui;

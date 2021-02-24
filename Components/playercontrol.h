@@ -25,6 +25,7 @@ public:
 private:
     Ui::PlayerControl *ui;
     int duration = 0;
+    ISong song;
 
 signals:
     void timeChanged(int time);

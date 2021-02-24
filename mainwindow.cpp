@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::addHandlers()
 {
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent *ev)

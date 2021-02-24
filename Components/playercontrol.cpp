@@ -6,7 +6,8 @@
 
 PlayerControl::PlayerControl(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PlayerControl)
+    ui(new Ui::PlayerControl),
+    song("")
 {
     ui->setupUi(this);
     QCommonStyle style;
@@ -33,6 +34,10 @@ void PlayerControl::addHandlers()
     connect(ui->next, &IClickable::change, player, [=](bool){player->nextSong();});
     connect(ui->stop, &IClickable::change, player, [=](bool){player->togglePlay();});
 
+    connect(ui->like, &IClickable::change, player, [=](bool){
+        player->toggleLike(this->song.getPath());
+    });
+
     connect(this->ui->slider, &QSlider::sliderReleased, player, [=](){
         player->changeTime(duration * this->ui->slider->value() / 100);
     });
@@ -47,6 +52,12 @@ void PlayerControl::songChanged(ISong song)
     this->ui->currentTime->setText("00:00");
     this->ui->author->setText(song.getAuthor());
     this->ui->name->setText(song.getName());
+
+    QString path = QString(":/images/%1").arg(song.getLiked() ? "redHeart.png" : "blackHeart.png");
+    ui->like->setPixmap(QPixmap(path).scaledToWidth(20));
+    ui->like->adjustSize();
+
+    this->song = song;
 
     //show player
     this->show();

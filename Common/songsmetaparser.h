@@ -9,6 +9,7 @@
 #include <QUrl>
 
 #include "Interfaces/isong.h"
+#include "Common/database.h"
 
 class SongsMetaParser: public QObject
 {
