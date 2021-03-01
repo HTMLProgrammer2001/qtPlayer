@@ -41,6 +41,12 @@ void PlayerControl::addHandlers()
     connect(this->ui->slider, &QSlider::sliderReleased, player, [=](){
         player->changeTime(duration * this->ui->slider->value() / 100);
     });
+
+    QShortcut *forward = new QShortcut(QKeySequence(QKeySequence::MoveToNextChar), this);
+    connect(forward, &QShortcut::activated, this, [=](){player->forward();});
+
+    QShortcut *back = new QShortcut(QKeySequence(QKeySequence::MoveToPreviousChar), this);
+    connect(back, &QShortcut::activated, this, [=](){player->back();});
 }
 
 void PlayerControl::songChanged(ISong song)

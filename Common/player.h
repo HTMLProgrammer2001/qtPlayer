@@ -28,6 +28,7 @@ private:
     bool isReversed = false;
     bool isLoading = false;
     ISource *source = nullptr;
+    qint64 position = 0;
 
 public:
     Player();
@@ -41,6 +42,7 @@ public:
     bool getSort();
     void changePlayerSong();
     void setSource(ISource*);
+    qint64 getPosition();
 
 signals:
     void currentSongChanged(ISong song);
@@ -53,6 +55,7 @@ public slots:
     void changeCurrentSong(ISong song);
     void setSongs(QList<ISong> songs);
     void changeTime(int time);
+    void changePosition(qint64);
     void togglePlay();
     void nextSong();
     void prevSong();
@@ -61,6 +64,8 @@ public slots:
     void reload();
     void changeSort(bool isReversed);
     void toggleLike(QString path);
+    void forward();
+    void back();
 };
 
 #endif // PLAYER_H

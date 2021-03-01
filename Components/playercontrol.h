@@ -2,9 +2,11 @@
 #define PLAYERCONTROL_H
 
 #include <QWidget>
-#include<QStyle>
-#include<QCommonStyle>
-#include<QIcon>
+#include <QStyle>
+#include <QCommonStyle>
+#include <QIcon>
+#include <QKeySequence>
+#include <QShortcut>
 
 #include "Interfaces/isong.h"
 #include "Common/player.h"

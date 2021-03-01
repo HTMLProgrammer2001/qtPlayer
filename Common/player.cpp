@@ -42,8 +42,14 @@ void Player::changeSort(bool isReversed)
 void Player::addHandlers()
 {
     connect(&this->parser, &SongsMetaParser::songsParsed, this, &Player::setSongs);
-    connect(this->player, &QMediaPlayer::positionChanged, this, &Player::timeChanged);
     connect(this->player, &QMediaPlayer::stateChanged, this, &Player::changeState);
+
+    connect(this->player, &QMediaPlayer::positionChanged, this, &Player::changePosition);
+
+    connect(this->player, &QMediaPlayer::mediaStatusChanged, this, [&](QMediaPlayer::MediaStatus status){
+        if(status == QMediaPlayer::EndOfMedia)
+            this->nextSong();
+    });
 }
 
 QList<ISong> Player::getSongs()
@@ -65,6 +71,12 @@ QList<ISong> Player::getSongs()
     return filteredList;
 }
 
+void Player::changePosition(qint64 pos)
+{
+    this->position = pos;
+    emit timeChanged(pos);
+}
+
 void Player::changePlayerSong()
 {
     auto song = this->getSongs().at(this->currentIndex);
@@ -83,6 +95,10 @@ Player *Player::getInstance()
     return instance;
 }
 
+qint64 Player::getPosition(){
+    return this->position;
+}
+
 void Player::changeCurrentSong(ISong song)
 {
     int index = this->getSongs().indexOf(song);
@@ -96,6 +112,7 @@ void Player::changeCurrentSong(ISong song)
 
 void Player::setSongs(QList<ISong> songs)
 {
+    qDebug() << "Songs: " << songs.size();
     //change songs
     this->songs = songs;
     emit songsListChanged(this->getSongs());
@@ -107,7 +124,6 @@ void Player::setSongs(QList<ISong> songs)
 
 void Player::changeTime(int position)
 {
-    qDebug() << "Change" << position;
     this->player->setPosition(position);
 }
 
@@ -157,16 +173,39 @@ void Player::toggleLike(QString path)
     auto db = Database::getInstance();
     int index = 0;
 
-    if(db->toggleFavorite(path)){
-        foreach(ISong song, songs){
-            if(song.getPath() != path)
-                index++;
-            else{
-                songs[index].setLiked(!song.getLiked());
-                emit currentSongChanged(this->getSongs()[this->currentIndex]);
-            }
+    //error occured
+    if(!db->toggleFavorite(path))
+        return;
+
+    //change song
+    foreach(ISong song, songs){
+        if(song.getPath() != path)
+            index++;
+        else{
+            songs[index].setLiked(!song.getLiked());
+            emit currentSongChanged(this->getSongs()[this->currentIndex]);
         }
     }
+}
+
+void Player::forward()
+{
+    ISong curSong = this->getSongs().at(this->currentIndex);
+    qint64 pos = this->getPosition();
+    qint64 dur = curSong.getDuration();
+
+    pos += 5000;
+    pos = qMin(pos, dur - 1);
+    this->changeTime(pos);
+}
+
+void Player::back()
+{
+    int pos = this->getPosition();
+
+    pos -= 5000;
+    pos = qMax(pos, 0);
+    this->changeTime(pos);
 }
 
 Player::~Player()

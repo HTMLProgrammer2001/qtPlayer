@@ -20,7 +20,6 @@ SOURCES = $$files(*.cpp, true)
 HEADERS = $$files(*.h, true)
 
 FORMS += \
-    Pages/favoritepage.ui \
     Pages/mainpage.ui \
     mainwindow.ui \
     Components/playercontrol.ui \
@@ -36,3 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     images.qrc
+
+RC_ICONS = app.ico

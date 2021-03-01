@@ -30,7 +30,7 @@ public:
     ~MainPage();
     void showEvent(QShowEvent *event) override;
 
-private:
+protected:
     Ui::MainPage *ui;
     SearchForm* form;
     SideBar* sidebar;

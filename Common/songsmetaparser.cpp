@@ -18,7 +18,7 @@ void SongsMetaParser::setPaths(QStringList paths)
 
 void SongsMetaParser::parseCurrentData()
 {
-    if(this->cur >= this->paths.size() - 1){
+    if(this->cur >= this->paths.size()){
         emit songsParsed(songs);
         return;
     }
