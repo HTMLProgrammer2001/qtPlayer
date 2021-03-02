@@ -14,6 +14,7 @@
 #include "Interfaces/isource.h"
 #include "database.h"
 #include "songsmetaparser.h"
+#include "randomgen.h"
 
 class Player: public QObject
 {
@@ -26,9 +27,11 @@ private:
     int currentIndex;
     QString filter = "";
     bool isReversed = false;
+    bool isMix = false;
     bool isLoading = false;
     ISource *source = nullptr;
     qint64 position = 0;
+    RandomGen gen;
 
 public:
     Player();
@@ -41,6 +44,7 @@ public:
     bool getLoading();
     bool getSort();
     void changePlayerSong();
+    bool toggleMode();
     void setSource(ISource*);
     qint64 getPosition();
 

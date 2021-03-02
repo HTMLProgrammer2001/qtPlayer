@@ -3,7 +3,7 @@
 
 Player *Player::instance = nullptr;
 
-Player::Player(): QObject(nullptr)
+Player::Player(): QObject(nullptr), gen(0, 0)
 {
     player = new QMediaPlayer(this);
     this->addHandlers();
@@ -71,6 +71,16 @@ QList<ISong> Player::getSongs()
     return filteredList;
 }
 
+bool Player::toggleMode()
+{
+    this->isMix = !this->isMix;
+
+    if(this->isMix)
+        this->nextSong();
+
+    return this->isMix;
+}
+
 void Player::changePosition(qint64 pos)
 {
     this->position = pos;
@@ -112,9 +122,9 @@ void Player::changeCurrentSong(ISong song)
 
 void Player::setSongs(QList<ISong> songs)
 {
-    qDebug() << "Songs: " << songs.size();
     //change songs
     this->songs = songs;
+    this->gen = RandomGen(0, songs.size());
     emit songsListChanged(this->getSongs());
 
     //stop loading
@@ -136,7 +146,10 @@ void Player::togglePlay()
 void Player::nextSong()
 {
     //change index
-    this->currentIndex++;
+    if(this->isMix)
+        this->currentIndex = this->gen.next();
+    else
+        this->currentIndex++;
 
     //reset it if current index more than size
     if(this->currentIndex >= this->getSongs().size())
@@ -148,7 +161,10 @@ void Player::nextSong()
 void Player::prevSong()
 {
     //change index
-    this->currentIndex--;
+    if(this->isMix)
+        this->currentIndex = this->gen.prev();
+    else
+        this->currentIndex--;
 
     //reset it if current index more than size
     if(this->currentIndex < 0)

@@ -224,6 +224,27 @@ QLabel::hover{
          </widget>
         </item>
         <item>
+         <widget class="IClickable" name="mix">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font: 75 10pt &quot;Arial&quot;;
+color: rgb(79, 147, 255);
+
+QLabel::hover{
+	color: rgb(42, 109, 255)
+}</string>
+          </property>
+          <property name="text">
+           <string>Mix</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="IClickable" name="reload">
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>

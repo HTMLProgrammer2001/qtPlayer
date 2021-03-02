@@ -33,6 +33,11 @@ void MainPage::setHandlers()
     connect(ui->reload, &IClickable::change, player, [&](bool){
         player->reload();
     });
+
+    connect(ui->mix, &IClickable::change, [&](bool){
+        bool isMix = player->toggleMode();
+        ui->mix->setText(isMix ? "Direct" : "Mix");
+    });
 }
 
 void MainPage::initUI()
